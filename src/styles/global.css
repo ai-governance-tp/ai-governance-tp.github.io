@@ -51,6 +51,8 @@ html {
   -webkit-text-size-adjust: 100%;
   scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
   scrollbar-width: thin;
+  /* miesto pre scrollbar je rezervované vždy – krátke stránky sa tak neposúvajú oproti dlhým */
+  scrollbar-gutter: stable;
 }
 body {
   margin: 0;
