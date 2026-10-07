@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import tim from '../data/tim.json';
+---
+
+<Base title="Tím">
+  <section class="hero">
+    <h1>Tím</h1>
+    <p class="lead">Päť študentov inžinierskeho štúdia FEI STU, tímový projekt v spolupráci so spoločnosťou {tim.spolupraca}.</p>
+  </section>
+
+  <section class="team">
+    <aside class="team__side">
+      <div class="team__fact">
+        <span class="team__fact-label">Vedúci projektu</span>
+        <span class="team__fact-value">{tim.veduci}</span>
+        <span class="team__fact-note">{tim.veduciInstitucia}</span>
+      </div>
+      <div class="team__fact">
+        <span class="team__fact-label">Spolupráca</span>
+        <span class="team__fact-value">{tim.spolupraca}</span>
+      </div>
+    </aside>
+
+    <ol class="roster">
+      {tim.clenovia.map((c, i) => (
+        <li class="roster__row">
+          <span class="roster__num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="roster__name">{c.meno}</span>
+          <span class:list={['roster__role', { 'roster__role--tbd': !c.rola }]}>{c.rola || '—'}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Base>

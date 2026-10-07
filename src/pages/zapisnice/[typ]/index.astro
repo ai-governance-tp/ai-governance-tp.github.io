@@ -1,0 +1,22 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ZapisniceList from '../../../components/ZapisniceList.astro';
+import { nacitajZapisnice, TYPY, type Typ } from '../../../lib/zapisnice';
+
+export function getStaticPaths() {
+  return (Object.keys(TYPY) as Typ[]).map((typ) => ({ params: { typ } }));
+}
+
+const typ = Astro.params.typ as Typ;
+const info = TYPY[typ];
+const zapisnice = (await nacitajZapisnice()).filter((z) => z.data.typ === typ);
+---
+
+<Base title={info.nazov}>
+  <section class="hero">
+    <h1>{info.nazov}</h1>
+    <p class="lead">{info.popis}</p>
+  </section>
+
+  <ZapisniceList zapisnice={zapisnice} ukazTyp={false} />
+</Base>

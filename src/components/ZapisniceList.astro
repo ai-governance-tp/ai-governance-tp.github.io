@@ -1,0 +1,34 @@
+---
+import { datumSk, datumIso } from '../lib/datum';
+import { TYPY, type Zapisnica } from '../lib/zapisnice';
+
+interface Props {
+  zapisnice: Zapisnica[];
+  ukazTyp?: boolean;
+}
+const { zapisnice, ukazTyp = true } = Astro.props;
+const zoznam = [...zapisnice].reverse();
+---
+
+{zoznam.length === 0 ? (
+  <p class="muted">Zatiaľ žiadne zápisnice.</p>
+) : (
+  <ul class="list">
+    {zoznam.map((z) => (
+      <li>
+        <a class="row" href={`/zapisnice/${z.id}/`}>
+          <span class:list={['row__num', `row__num--${z.data.typ}`]}>#{z.cislo}</span>
+          <span class="row__body">
+            <span class="row__title">
+              <time datetime={datumIso(z.data.datum)}>{datumSk(z.data.datum)}</time>
+              {ukazTyp && <span class:list={['badge', `badge--${z.data.typ}`]}>{TYPY[z.data.typ].kratky}</span>}
+            </span>
+            {z.data.zhrnutie && <span class="row__desc">{z.data.zhrnutie}</span>}
+            <span class="row__meta">{z.data.zapisal ? `Zapísal: ${z.data.zapisal}` : 'Zapisovateľ: doplniť'}</span>
+          </span>
+          <span class="row__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}

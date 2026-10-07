@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Card from '../../components/Card.astro';
+import { datumSk } from '../../lib/datum';
+
+const dokumenty = (await getCollection('dokumenty')).sort((a, b) => a.data.poradie - b.data.poradie);
+---
+
+<Base title="Dokumentácia">
+  <section class="hero">
+    <h1>Dokumentácia</h1>
+    <p class="lead">Dokumentácia projektu v elektronickej podobe. Zoznam sa dopĺňa priebežne, ako vznikajú ďalšie dokumenty.</p>
+  </section>
+
+  <div class="cards">
+    {dokumenty.map((d) => (
+      <Card
+        href={`/dokumentacia/${d.id}/`}
+        kicker={d.data.datum ? datumSk(d.data.datum) : 'Dokument'}
+        title={d.data.nazov}
+        meta={[d.data.popis, d.data.pdf ? 'aj ako PDF' : null].filter(Boolean).join(' · ')}
+      />
+    ))}
+    <Card href="/zadanie/" kicker="Zadanie" title="Oficiálne zadanie a ciele" meta="Cieľ práce, anotácia, úlohy a ciele riešenia" />
+  </div>
+
+  <p class="muted">
+    Zápisnice zo stretnutí sú súčasťou dokumentácie a nachádzajú sa v sekcii <a href="/zapisnice/">Zápisnice</a>.
+  </p>
+</Base>

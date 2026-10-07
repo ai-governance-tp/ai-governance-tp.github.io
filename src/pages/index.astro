@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import stav from '../data/stav.json';
+
+const historia = [...stav.historia].sort((a, b) => (a.datum < b.datum ? 1 : -1));
+---
+
+<Base>
+  <section class="hero">
+    <span class="kicker">Tímový projekt · FEI STU Bratislava · 2026/2027</span>
+    <h1>Inteligentný systém pre automatizované hodnotenie bezpečnosti a governance AI systémov</h1>
+    <p class="lead">
+      Prototyp, ktorý z dokumentácie o AI modeli automaticky zostaví jeho bezpečnostný a governance profil — a každé
+      zistenie podloží dôkazom. Vzniká v spolupráci so spoločnosťou Alison Slovakia s.r.o.
+    </p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Stav projektu</h2>
+      <span class="muted">Posledná aktualizácia <strong>{stav.aktualizovane}</strong></span>
+    </div>
+    <div class="status">
+      <div class="status__col status__col--done">
+        <span class="status__label">Hotové</span>
+        <ul>{stav.hotove.map((t) => <li>{t}</li>)}</ul>
+      </div>
+      <div class="status__col status__col--now">
+        <span class="status__label">Práve sa robí</span>
+        <ul>{stav.robiSa.map((t) => <li>{t}</li>)}</ul>
+      </div>
+      <div class="status__col status__col--next">
+        <span class="status__label">Ďalší krok</span>
+        <ul>{stav.dalej.map((t) => <li>{t}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="prose">
+    <h2>O projekte</h2>
+    <p>
+      Systém beží lokálne v kontajnerizovanom prostredí. Z dokumentácie o AI modeli (model cards, technické dokumenty,
+      výsledky evaluácií) pomocou lokálne spúšťaného jazykového modelu vytvorí štruktúrovaný bezpečnostný a governance
+      profil, identifikuje riziká a chýbajúce informácie a ku každému zisteniu priloží odkaz na zdroj.
+    </p>
+    <p>Podrobnosti o navrhovanom riešení sú v <a href="/dokumentacia/ponuka/">ponuke</a>.</p>
+  </section>
+
+  <section>
+    <h2>História aktualizácií</h2>
+    <ol class="timeline">
+      {historia.map((h) => (
+        <li>
+          <time datetime={h.datum}>{h.datum}</time>
+          <span>{h.text}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Base>

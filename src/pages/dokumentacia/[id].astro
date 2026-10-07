@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BackLink from '../../components/BackLink.astro';
+import { datumSk } from '../../lib/datum';
+
+export async function getStaticPaths() {
+  const dokumenty = await getCollection('dokumenty');
+  return dokumenty.map((d) => ({ params: { id: d.id }, props: { d } }));
+}
+
+const { d } = Astro.props;
+const { Content } = await render(d);
+---
+
+<Base title={d.data.nazov}>
+  <BackLink href="/dokumentacia/" label="Dokumentácia" />
+
+  <section class="hero">
+    {d.data.datum && <span class="kicker">{datumSk(d.data.datum)}</span>}
+    <h1>{d.data.nazov}</h1>
+    {d.data.popis && <p class="lead">{d.data.popis}</p>}
+    {d.data.pdf && (
+      <a class="button" href={d.data.pdf} target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M8 2v8m0 0 3-3m-3 3L5 7M3 13h10"/></svg>
+        <span>Stiahnuť PDF</span>
+      </a>
+    )}
+  </section>
+
+  <article class="prose">
+    <Content />
+  </article>
+</Base>

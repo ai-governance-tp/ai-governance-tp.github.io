@@ -1,0 +1,12 @@
+{
+  "veduci": "Lukáš Šurab",
+  "veduciInstitucia": "FEI STU",
+  "spolupraca": "Alison Slovakia s.r.o.",
+  "clenovia": [
+    { "meno": "Ivan Yachmenov", "program": "I-API-AI", "rola": "" },
+    { "meno": "Viacheslav Kolesnikov", "program": "I-API-ISS", "rola": "" },
+    { "meno": "Hlib Dorosh", "program": "I-API-ISS", "rola": "" },
+    { "meno": "Ihor Shpetun", "program": "I-API-AI", "rola": "" },
+    { "meno": "Dmytro Loiko", "program": "I-API-ISS", "rola": "" }
+  ]
+}

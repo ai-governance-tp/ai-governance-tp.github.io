@@ -1,0 +1,19 @@
+{
+  "aktualizovane": "2026-10-07",
+  "hotove": [
+    "Zostavenie tímu a výber témy",
+    "Vypracovanie a odovzdanie ponuky (22. 9. 2026)",
+    "Spustenie webovej stránky projektu"
+  ],
+  "robiSa": [
+    "Oboznámenie sa s problémovou oblasťou (Fáza 1)",
+    "Prieskum rámcov pre bezpečnosť a governance AI"
+  ],
+  "dalej": [
+    "Špecifikácia požiadaviek",
+    "Rozdelenie rolí v tíme"
+  ],
+  "historia": [
+    { "datum": "2026-10-07", "text": "Spustená webová stránka, zverejnená ponuka a prvá zápisnica." }
+  ]
+}

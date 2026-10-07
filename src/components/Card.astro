@@ -1,0 +1,16 @@
+---
+interface Props {
+  href: string;
+  kicker?: string;
+  title: string;
+  meta?: string;
+  external?: boolean;
+}
+const { href, kicker, title, meta, external = false } = Astro.props;
+---
+
+<a class="card" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+  {kicker && <span class="card__kicker">{kicker}</span>}
+  <span class="card__title">{title}</span>
+  {meta && <span class="card__meta">{meta}</span>}
+</a>

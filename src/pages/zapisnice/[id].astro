@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BackLink from '../../components/BackLink.astro';
+import { datumSk, datumIso } from '../../lib/datum';
+import { nacitajZapisnice, TYPY } from '../../lib/zapisnice';
+
+export async function getStaticPaths() {
+  const vsetky = await nacitajZapisnice();
+  return vsetky.map((z) => {
+    const rovnake = vsetky.filter((x) => x.data.typ === z.data.typ);
+    const i = rovnake.findIndex((x) => x.id === z.id);
+    return {
+      params: { id: z.id },
+      props: { z, starsia: rovnake[i - 1] ?? null, novsia: rovnake[i + 1] ?? null },
+    };
+  });
+}
+
+const { z, starsia, novsia } = Astro.props;
+const { Content } = await render(z);
+const d = z.data;
+const info = TYPY[d.typ];
+const nadpis = `Zápisnica zo stretnutia — ${datumIso(d.datum)}`;
+---
+
+<Base title={nadpis}>
+  <BackLink href={info.cesta} label={info.nazov} />
+
+  <section class="hero">
+    <span class="kicker">{d.typ === 'veduci' ? 'Stretnutie s vedúcim' : 'Tímové stretnutie'} #{z.cislo}</span>
+    <h1>Zápisnica zo stretnutia — <time datetime={datumIso(d.datum)}>{datumSk(d.datum)}</time></h1>
+  </section>
+
+  <dl class="meta">
+    <dt>Dátum a čas</dt><dd>{datumIso(d.datum)}{d.cas && `, ${d.cas}`}</dd>
+    <dt>Forma</dt><dd>{d.forma || '—'}</dd>
+    <dt>Prítomní</dt><dd>{d.pritomni.length ? d.pritomni.join(', ') : '—'}</dd>
+    <dt>Zapísal</dt><dd>{d.zapisal || '—'}</dd>
+  </dl>
+
+  <article class="prose">
+    <Content />
+  </article>
+
+  <nav class="pager" aria-label="Ďalšie zápisnice">
+    {starsia ? (
+      <a class="pager__link pager__link--prev" href={`/zapisnice/${starsia.id}/`}>
+        <span class="pager__dir">← Predchádzajúca zápisnica</span>
+        <span class="pager__title">{datumSk(starsia.data.datum)}</span>
+      </a>
+    ) : <span />}
+    {novsia ? (
+      <a class="pager__link pager__link--next" href={`/zapisnice/${novsia.id}/`}>
+        <span class="pager__dir">Nasledujúca zápisnica →</span>
+        <span class="pager__title">{datumSk(novsia.data.datum)}</span>
+      </a>
+    ) : <span />}
+  </nav>
+</Base>

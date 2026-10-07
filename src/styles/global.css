@@ -1,0 +1,981 @@
+/* =========================================================
+   AI Governance – web tímového projektu
+   Jediná tmavá schéma. Všetky farby sú tu, v tokenoch.
+   ========================================================= */
+
+:root {
+  --bg: #090e1c;
+  --bg-2: #0d1426;
+
+  /* povrchy: jemný sklenený efekt */
+  --surface: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+  --surface-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.04));
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 16px 40px -18px rgba(0, 0, 0, 0.7);
+
+  --fg: #dfe4f0;
+  --fg-muted: #aab2c8;
+  --fg-faint: #76809a;
+  --fg-strong: #ffffff;
+
+  --accent: #5eead4;
+  --accent-2: #7dd3fc;
+  --accent-soft: rgba(94, 234, 212, 0.14);
+  --link: #8fd8ff;
+  --done: #4ade80;
+  --now: #5eead4;
+  --next: #b197fc;
+
+  --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  --container: 64rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --radius: 14px;
+  --radius-sm: 9px;
+  --header-h: 4.5rem;
+  --nav-h: 3rem;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + var(--nav-h) + 1.5rem);
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  scrollbar-width: thin;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--fg);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+/* pozadie: hlboká modrá + farebné žiary + jemná mriežka, ktorá sa smerom dole stráca */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(70rem 40rem at 10% -15%, rgba(94, 234, 212, 0.16), transparent 60%),
+    radial-gradient(55rem 32rem at 100% 5%, rgba(125, 211, 252, 0.13), transparent 60%),
+    radial-gradient(60rem 45rem at 50% 115%, rgba(167, 139, 250, 0.14), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(80% 70% at 50% 0%, #000 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(80% 70% at 50% 0%, #000 20%, transparent 100%);
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(94, 234, 212, 0.55);
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+main.container {
+  flex: 1;
+  padding-block: 3rem 5rem;
+}
+section + section {
+  margin-top: 3.5rem;
+}
+
+/* ---------- Hlavička ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(9, 14, 28, 0.7);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+.site-header__top {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--fg-strong);
+  min-width: 0;
+}
+.brand:hover {
+  text-decoration: none;
+}
+.brand img {
+  width: 3.2rem;
+  height: 3.2rem;
+  filter: drop-shadow(0 0 14px rgba(94, 234, 212, 0.35));
+}
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+}
+.brand__name {
+  font-weight: 600;
+  font-size: 1.45rem;
+  letter-spacing: -0.015em;
+}
+.brand__sub {
+  font-size: 0.95rem;
+  color: var(--fg-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--fg-muted);
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.repo:hover {
+  text-decoration: none;
+  color: var(--fg-strong);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ---------- Navigácia: v strede, rovnaké medzery aj okraje ---------- */
+.site-nav {
+  border-top: 1px solid var(--line);
+}
+.site-nav ul {
+  list-style: none;
+  margin: 0 auto;              /* .container – ale margin tu píšeme explicitne */
+  padding: 0 var(--gutter);
+  width: 100%;
+  max-width: var(--container);
+  height: var(--nav-h);
+  display: flex;
+  justify-content: space-evenly;
+  gap: 0;
+}
+.site-nav li {
+  position: relative;
+  display: flex;
+  flex: none;
+}
+.site-nav > ul > li > a,
+.site-nav .nav-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--fg-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.site-nav > ul > li > a::after,
+.site-nav .nav-btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition: opacity 0.15s, transform 0.2s;
+}
+.site-nav > ul > li > a:hover,
+.site-nav .nav-btn:hover {
+  text-decoration: none;
+  color: var(--fg-strong);
+}
+.site-nav > ul > li > a.active,
+.site-nav .nav-btn.active,
+.site-nav .is-open .nav-btn {
+  color: var(--accent);
+}
+.site-nav > ul > li > a.active::after,
+.site-nav .nav-btn.active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+.site-nav .caret {
+  margin-left: 0.4rem;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+.site-nav .is-open .caret {
+  transform: rotate(180deg);
+}
+
+/* ---------- Rozbaľovacie menu Zápisnice (otvára sa kliknutím) ---------- */
+.menu {
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 50%;
+  min-width: 10rem;
+  padding: 0.35rem;
+  transform: translate(-50%, -4px);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: #0b1225;
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  z-index: 20;
+}
+.is-open .menu {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.menu__item {
+  display: block;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  border-radius: 6px;
+  color: var(--fg);
+  white-space: nowrap;
+  transition: background 0.12s;
+}
+.menu__item:hover {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+.menu__item.active {
+  color: var(--accent);
+}
+
+/* ---------- Typografia ---------- */
+h1,
+h2,
+h3 {
+  color: var(--fg-strong);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
+  margin: 0;
+}
+h1 {
+  font-size: clamp(2.1rem, 1.4rem + 2.2vw, 3rem);
+  text-wrap: balance;
+  background: linear-gradient(180deg, #fff 0%, #cdd5e6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+h2 {
+  font-size: 1.7rem;
+  margin: 0 0 1.1rem;
+}
+h2::after {
+  content: '';
+  display: block;
+  width: 2.75rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+h3 {
+  font-size: 1.3rem;
+  margin: 1.8rem 0 0.5rem;
+}
+p {
+  margin: 0 0 1em;
+}
+.hero {
+  margin-bottom: 2.75rem;
+}
+.hero h1 {
+  margin-bottom: 0.75rem;
+}
+.lead {
+  font-size: 1.22rem;
+  line-height: 1.6;
+  color: var(--fg-muted);
+  max-width: 50rem;
+  margin: 0 0 1.3rem;
+  text-wrap: pretty;
+}
+.muted {
+  color: var(--fg-faint);
+  font-size: 0.95rem;
+}
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+.kicker::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.1rem;
+}
+.section-head h2 {
+  margin: 0;
+}
+.section-head strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* ---------- Prose (markdown / dlhý text) ---------- */
+.prose {
+  max-width: 50rem;
+}
+.prose h2 {
+  margin-top: 2.6rem;
+}
+.prose h2:first-child {
+  margin-top: 0;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4rem;
+  margin: 0 0 1.2em;
+}
+.prose li {
+  margin: 0.4em 0;
+  padding-left: 0.2em;
+}
+.prose li::marker {
+  color: var(--fg-faint);
+}
+.prose li > p {
+  margin: 0;
+}
+.prose strong {
+  color: var(--fg-strong);
+  font-weight: 600;
+}
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+}
+.prose pre {
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.35) !important;
+  overflow-x: auto;
+  font-size: 0.88rem;
+}
+.prose pre code {
+  padding: 0;
+  background: none;
+}
+.prose blockquote {
+  margin: 1.2em 0;
+  padding: 0.2em 1.2em;
+  border-left: 3px solid var(--accent);
+  color: var(--fg-muted);
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 2rem 0;
+}
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.2em 0;
+  font-size: 0.98rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.prose thead th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--fg-strong);
+  font-weight: 600;
+  text-align: left;
+}
+.prose th,
+.prose td {
+  padding: 0.6em 0.95em;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+.prose tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ---------- Stav projektu ---------- */
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.status__col {
+  position: relative;
+  padding: 1.3rem 1.6rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(60% 120% at 0% 50%, color-mix(in srgb, var(--col) 16%, transparent), transparent 60%),
+    var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.status__col::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--col);
+  opacity: 0.9;
+}
+.status__col--done { --col: var(--done); }
+.status__col--now  { --col: var(--now); }
+.status__col--next { --col: var(--next); }
+.status__label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--col);
+  margin-bottom: 0.7rem;
+}
+.status__label::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--col);
+  box-shadow: 0 0 10px var(--col);
+}
+.status ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  columns: 2;
+  column-gap: 2.5rem;
+}
+@media (max-width: 720px) {
+  .status ul {
+    columns: 1;
+  }
+}
+.status li {
+  margin: 0.35em 0;
+  padding-left: 0.15em;
+  break-inside: avoid;
+}
+.status li::marker {
+  color: var(--col);
+}
+
+/* ---------- Časová os aktualizácií ---------- */
+.timeline {
+  list-style: none;
+  margin: 0 0 0 0.4rem;
+  padding: 0.2rem 0 0;
+  border-left: 1px solid var(--line-strong);
+}
+.timeline li {
+  position: relative;
+  padding: 0 0 1.2rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  align-items: baseline;
+}
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.55em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 12px var(--accent);
+}
+.timeline time {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--fg-faint);
+  min-width: 7rem;
+}
+
+/* ---------- Karty ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin: 0 0 2rem;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.2rem 1.3rem;
+  min-height: 7.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--fg);
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+.card:hover {
+  text-decoration: none;
+  background: var(--surface-hover);
+  border-color: rgba(94, 234, 212, 0.55);
+  transform: translateY(-2px);
+}
+.card__kicker {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.card__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--fg-strong);
+}
+.card__meta {
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+
+/* ---------- Odznaky typu zápisnice ---------- */
+.badge {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+.badge--veduci {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.badge--tim {
+  color: var(--next);
+  background: rgba(177, 151, 252, 0.15);
+}
+.row__num--tim {
+  color: var(--next);
+  background: rgba(177, 151, 252, 0.15);
+}
+
+/* ---------- Zoznam zápisníc ---------- */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.05rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--fg);
+  transition: border-color 0.15s, background 0.15s;
+}
+.row:hover {
+  text-decoration: none;
+  background: var(--surface-hover);
+  border-color: rgba(94, 234, 212, 0.55);
+}
+.row__num {
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  color: var(--accent);
+  padding: 0.35rem 0.6rem;
+  border-radius: 7px;
+  background: var(--accent-soft);
+}
+.row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.row__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--fg-strong);
+}
+.row__desc {
+  font-size: 1rem;
+  color: var(--fg-muted);
+}
+.row__meta {
+  font-size: 0.88rem;
+  color: var(--fg-faint);
+}
+.row__arrow {
+  color: var(--fg-faint);
+  transition: transform 0.15s, color 0.15s;
+}
+.row:hover .row__arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+/* ---------- Metadáta zápisnice ---------- */
+.meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.45rem 1.5rem;
+  margin: 0 0 2.4rem;
+  padding: 1.15rem 1.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 1rem;
+}
+.meta dt {
+  color: var(--fg-faint);
+}
+.meta dd {
+  margin: 0;
+  color: var(--fg-strong);
+}
+
+/* ---------- Tím ---------- */
+.team {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) 2.2fr;
+  gap: 3rem;
+  align-items: start;
+}
+.team__side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  padding-top: 0.4rem;
+}
+.team__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+.team__fact-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-faint);
+}
+.team__fact-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--fg-strong);
+}
+.team__fact-note {
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+.roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.roster__row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.1rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.15s;
+}
+.roster__row:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+.roster__num {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+.roster__name {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg-strong);
+}
+.roster__role {
+  font-size: 0.95rem;
+  color: var(--fg-muted);
+}
+.roster__role--tbd {
+  color: var(--fg-faint);
+}
+@media (max-width: 720px) {
+  .team {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .team__side {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+  }
+}
+
+/* ---------- Odkazy späť / ďalej, tlačidlá ---------- */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+  color: var(--fg-faint);
+  margin-bottom: 1.4rem;
+}
+.back:hover {
+  text-decoration: none;
+  color: var(--accent);
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.6);
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.button:hover {
+  text-decoration: none;
+  background: var(--accent);
+  color: #07101c;
+  box-shadow: 0 0 22px rgba(94, 234, 212, 0.35);
+}
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.pager__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.95rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+  transition: border-color 0.15s, background 0.15s;
+}
+.pager__link:hover {
+  text-decoration: none;
+  border-color: rgba(94, 234, 212, 0.55);
+  background: var(--surface-hover);
+}
+.pager__link--next {
+  text-align: right;
+}
+.pager__dir {
+  font-size: 0.82rem;
+  color: var(--fg-faint);
+}
+.pager__title {
+  font-weight: 500;
+  color: var(--fg-strong);
+}
+
+/* ---------- Pätička ---------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: rgba(9, 14, 28, 0.6);
+}
+.site-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  padding-block: 1.3rem;
+  font-size: 0.88rem;
+  color: var(--fg-faint);
+}
+
+/* ---------- Mobil ---------- */
+@media (max-width: 640px) {
+  .brand__sub {
+    display: none;
+  }
+  .repo span {
+    display: none;
+  }
+  .site-nav ul {
+    justify-content: flex-start;
+    gap: 1.4rem;
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .site-nav ul::-webkit-scrollbar {
+    display: none;
+  }
+  .menu {
+    position: fixed;
+    top: calc(var(--header-h) + var(--nav-h) + 8px);
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+    transform: translateY(-4px);
+    border-top: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .is-open .menu {
+    transform: translateY(0);
+  }
+  .row {
+    grid-template-columns: auto 1fr;
+  }
+  .row__arrow {
+    display: none;
+  }
+  .meta {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+  .meta dt {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .pager {
+    grid-template-columns: 1fr;
+  }
+  .pager__link--next {
+    text-align: left;
+  }
+}

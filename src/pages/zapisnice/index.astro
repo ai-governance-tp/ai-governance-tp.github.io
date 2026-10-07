@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import ZapisniceList from '../../components/ZapisniceList.astro';
+import { nacitajZapisnice } from '../../lib/zapisnice';
+
+const vsetky = await nacitajZapisnice();
+---
+
+<Base title="Zápisnice">
+  <section class="hero">
+    <h1>Zápisnice</h1>
+    <p class="lead">
+      Záznamy zo všetkých stretnutí, najnovšie hore. Každá zápisnica obsahuje účastníkov, priebeh stretnutia,
+      zhodnotenie úloh z predchádzajúceho stretnutia a úlohy na ďalšie obdobie.
+    </p>
+  </section>
+
+  <ZapisniceList zapisnice={vsetky} />
+</Base>
