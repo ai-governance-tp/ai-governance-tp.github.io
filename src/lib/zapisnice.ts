@@ -21,7 +21,11 @@ export type Zapisnica = CollectionEntry<'zapisnice'> & { cislo: number };
 
 /** Všetky zápisnice od najstaršej, s poradovým číslom v rámci svojho typu. */
 export async function nacitajZapisnice(): Promise<Zapisnica[]> {
-  const vsetky = (await getCollection('zapisnice')).sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime());
+  const vsetky = (await getCollection('zapisnice')).sort((a, b) => {
+    const diff = a.data.datum.getTime() - b.data.datum.getTime();
+    if (diff !== 0) return diff;
+    return a.id.localeCompare(b.id);
+  });
   const pocitadlo: Record<string, number> = {};
   return vsetky.map((z) => {
     pocitadlo[z.data.typ] = (pocitadlo[z.data.typ] ?? 0) + 1;
