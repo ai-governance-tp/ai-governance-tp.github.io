@@ -1,19 +1,44 @@
 {
-  "aktualizovane": "2026-10-07",
+  "aktualizovane": "2026-10-28",
   "hotove": [
     "Zostavenie tímu a výber témy",
     "Vypracovanie a odovzdanie ponuky (22. 9. 2026)",
-    "Spustenie webovej stránky projektu"
+    "Spustenie webovej stránky projektu",
+    "Prieskum existujúcich riešení (State of the Art) a rámcov pre AI governance",
+    "Návrh architektúry systému a UML diagramov (komponenty, agenti, informačný model, nasadenie, priebeh auditu)",
+    "Výber nástrojov (Evaluation & Security Stack) a definovanie whitelistu povolených zdrojov",
+    "Špecifikácia extrahovaných atribútov a dvojfázovej verifikácie profilu modelu v dokumentácii"
   ],
   "robiSa": [
-    "Oboznámenie sa s problémovou oblasťou (Fáza 1)",
-    "Prieskum rámcov pre bezpečnosť a governance AI"
+    "Príprava serverového prostredia (Podman, PostgreSQL + pgvector, llama-server)",
+    "Implementácia dátovej schémy informačného modelu profilu a úložiska dôkazov",
+    "Príprava prvej verzie extrakcie dokumentácie (Docling) a zberu testovacích modelov"
   ],
   "dalej": [
-    "Špecifikácia požiadaviek",
-    "Rozdelenie rolí v tíme"
+    "Implementácia statických agentov (Extraktor profilu, Analytik rizík, Hodnotiteľ kritérií, Kritik)",
+    "Zostavenie katalógu kritérií (FMTI, EU AI Act, OWASP LLM Top 10, MITRE ATLAS)",
+    "Prepojenie orchestrátora a izolovaného sandboxu pre Analytika artefaktov (ModelScan, garak)"
   ],
   "historia": [
-    { "datum": "2026-10-07", "text": "Spustená webová stránka, zverejnená ponuka a prvá zápisnica." }
+    {
+      "datum": "2026-10-28",
+      "text": "Doplnená špecifikácia extrahovaných atribútov a dvojfázovej verifikácie profilu modelu do projektovej dokumentácie (kapitola 6), audit serverového prostredia a detailný plán implementácie."
+    },
+    {
+      "datum": "2026-10-26",
+      "text": "Vypracovaný návrh architektúry systému a UML diagramov (komponenty, orchestrátor a agenti, informačný model profilu, nasadenie, priebeh auditu), výber nástrojov (Evaluation & Security Stack) a whitelist povolených zdrojov."
+    },
+    {
+      "datum": "2026-10-22",
+      "text": "Tímové stretnutie a konzultácia s vedúcim: zjednotenie architektúry na báze open-source nástrojov, modulárny plán projektu, whitelist zdrojov a návrh experimentu s dynamickým generovaním skillov. Zverejnené zápisnice."
+    },
+    {
+      "datum": "2026-10-08",
+      "text": "Konzultácia s vedúcim: spresnenie rozsahu projektu, analýza existujúcich riešení (State of the Art) a návrh konceptu s hlavným LLM orchestrátorom a špecializovanými agentmi. Zverejnená zápisnica."
+    },
+    {
+      "datum": "2026-10-07",
+      "text": "Spustená webová stránka, zverejnená ponuka a prvá zápisnica."
+    }
   ]
 }
