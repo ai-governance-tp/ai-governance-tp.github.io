@@ -1,5 +1,5 @@
 {
-  "aktualizovane": "2026-10-28",
+  "aktualizovane": "2026-11-12",
   "hotove": [
     "Zostavenie tímu a výber témy",
     "Vypracovanie a odovzdanie ponuky (22. 9. 2026)",
@@ -7,19 +7,29 @@
     "Prieskum existujúcich riešení (State of the Art) a rámcov pre AI governance",
     "Návrh architektúry systému a UML diagramov (komponenty, agenti, informačný model, nasadenie, priebeh auditu)",
     "Výber nástrojov (Evaluation & Security Stack) a definovanie whitelistu povolených zdrojov",
-    "Špecifikácia extrahovaných atribútov a dvojfázovej verifikácie profilu modelu v dokumentácii"
+    "Špecifikácia extrahovaných atribútov a dvojfázovej verifikácie profilu modelu v dokumentácii",
+    "Rozdelenie práce na prvú funkčnú verziu (MVP) do piatich úloh a rozdelenie rolí v tíme",
+    "Spoločný repozitár kódu a návrh schémy spoločnej databázy ako rozhrania medzi časťami systému"
   ],
   "robiSa": [
-    "Príprava serverového prostredia (Podman, PostgreSQL + pgvector, llama-server)",
-    "Implementácia dátovej schémy informačného modelu profilu a úložiska dôkazov",
-    "Príprava prvej verzie extrakcie dokumentácie (Docling) a zberu testovacích modelov"
+    "Implementácia prvej funkčnej verzie (MVP) po častiach: platforma a databáza, zberač dokumentácie, agenti profilu, orchestrátor a report, požiadavky, riziká a testovanie modelu",
+    "Prepojenie všetkých častí do jedného reťazca od zadania modelu po report",
+    "Príprava serverového prostredia (Podman, PostgreSQL + pgvector, llama-server)"
   ],
   "dalej": [
-    "Implementácia statických agentov (Extraktor profilu, Analytik rizík, Hodnotiteľ kritérií, Kritik)",
-    "Zostavenie katalógu kritérií (FMTI, EU AI Act, OWASP LLM Top 10, MITRE ATLAS)",
-    "Prepojenie orchestrátora a izolovaného sandboxu pre Analytika artefaktov (ModelScan, garak)"
+    "Ukážka prvej funkčnej verzie (MVP) vedúcemu projektu",
+    "Testovanie a zlepšovanie systému po častiach, meranie kvality profilu oproti vzorovým profilom",
+    "Experiment s dynamickým generovaním skillov orchestrátorom"
   ],
   "historia": [
+    {
+      "datum": "2026-11-12",
+      "text": "Konzultácia s vedúcim: predstavený stav projektu a dohodnutá ukážka prvej funkčnej verzie (MVP) na budúci týždeň. Do dokumentácie pridaný dokument úloh, zverejnené zápisnice."
+    },
+    {
+      "datum": "2026-11-05",
+      "text": "Online tímové stretnutie: rozdelenie práce na prvú funkčnú verziu systému do piatich úloh a rozdelenie rolí v tíme."
+    },
     {
       "datum": "2026-10-28",
       "text": "Doplnená špecifikácia extrahovaných atribútov a dvojfázovej verifikácie profilu modelu do projektovej dokumentácie (kapitola 6), audit serverového prostredia a detailný plán implementácie."
